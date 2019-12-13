@@ -1,0 +1,19 @@
+# birthday-app
+# this file configures the serverless (Lambda) infrastructure that we want to provision on AWS
+
+service: birthday-backend
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-1
+
+functions:
+  birthdays:
+    handler: handler.birthdays  
+    events:
+      - http:
+          path: birthdays
+          method: get
+          cors: true
+
