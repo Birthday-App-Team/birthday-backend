@@ -10,6 +10,10 @@ provider:
 
 functions:
   birthdays:
+    environment:
+      DB_USER: ${opt:DB_USER}
+      DB_PASSWORD: ${opt:DB_PASSWORD}
+      DB_HOST: ${opt:DB_HOST}
     handler: handler.birthdays  
     events:
       - http:
