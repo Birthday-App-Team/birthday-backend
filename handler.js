@@ -8,8 +8,8 @@ const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: "birthdaydb"
-})
+  database: "birthdaydb",
+});
 
 const app = express();
 app.use(cors());
@@ -24,7 +24,6 @@ app.get("/birthdays", (req, res) => {
       res.status(200).json(data);
     }
   });
-})
+});
 
 module.exports.birthdays = serverlessHttp(app);
-
