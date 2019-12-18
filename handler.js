@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 const express = require("express");
 const serverlessHttp = require("serverless-http");
 const cors = require("cors");
@@ -25,5 +26,17 @@ app.get("/birthdays", (req, res) => {
     }
   });
 });
+
+app.delete("/birthdays/:birthdayID", (req, res) => {
+  const birthdayID = req.params.birthdayID;
+  connection.query("DELETE FROM Birthdays WHERE birthdayID = ?", [birthdayID], (err) => {
+    if (err) {
+      res.status(500).json({error: err});
+    } else {
+      res.status(200).send(`${birthdayID} has been deleted!`);
+    }
+  });
+});
+
 
 module.exports.birthdays = serverlessHttp(app);

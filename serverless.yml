@@ -20,4 +20,8 @@ functions:
           path: birthdays
           method: get
           cors: true
+      - http:
+          path: birthdays/{birthdayID}
+          method: delete
+          cors: true
 
