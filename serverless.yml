@@ -28,5 +28,9 @@ functions:
           path: birthdays
           method: post
           cors: true
+      - http:
+          path: birthdays/{birthdayID}
+          method: put
+          cors: true
 
 

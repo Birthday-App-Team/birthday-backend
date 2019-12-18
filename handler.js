@@ -41,12 +41,25 @@ app.delete("/birthdays/:birthdayID", (req, res) => {
 app.post("/birthdays", (req, res) => {
   const birthday = req.body;
   const q = "INSERT INTO Birthdays SET ?";
-  connection.query(q, birthday, function (err, data) {
+  connection.query(q, birthday, (err, data) => {
     if (err) {
-      res.status(500).json({error: err});
+      res.status(500).json({ error: err });
     } else {
       birthday.birthdayID = data.insertID;
       res.status(201).json(birthday);
+    }
+  });
+});
+
+app.put("/birthdays/:birthdayID", (req, res) => {
+  const birthdayID = req.params.birthdayID;
+  const birthday = req.body;
+  const q = "UPDATE Birthdays SET name = ?, gender = ?, date_of_birth = ?, interests = ? WHERE birthdayID = ?";
+  connection.query(q, [birthday.name, birthday.gender, birthday.date_of_birth, birthday.interests, birthday.birthdayID], (err, data) => {
+    if (err) {
+      res.status(500).json({ error: err });
+    } else {
+      res.status(205).send(`You updated a birthday for ${birthday.name} with the following data: ${JSON.stringify(birthday)}`);
     }
   });
 });
