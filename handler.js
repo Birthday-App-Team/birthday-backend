@@ -44,6 +44,9 @@ app.delete("/birthdays/:birthdayID", (req, res) => {
 
 app.post("/birthdays", (req, res) => {
   const birthday = req.body;
+  const dob = birthday; // install and require moment
+  // find out if it is this person's birthday today
+  // if so, make an axios request to the sendBirthday message function
   const q = "INSERT INTO Birthdays SET ?";
   connection.query(q, birthday, (err, data) => {
     if (err) {
@@ -68,7 +71,7 @@ app.put("/birthdays/:birthdayID", (req, res) => {
       birthday.date_of_birth,
       birthday.interests,
       birthday.phone_number,
-      birthday.birthdayID
+      birthdayID
     ],
     (err, data) => {
       if (err) {
