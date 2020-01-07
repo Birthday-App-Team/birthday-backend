@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: "birthdaydb",
+  database: "birthdaydb"
 });
 
 const app = express();
@@ -29,13 +29,17 @@ app.get("/birthdays", (req, res) => {
 
 app.delete("/birthdays/:birthdayID", (req, res) => {
   const birthdayID = req.params.birthdayID;
-  connection.query("DELETE FROM Birthdays WHERE birthdayID = ?", [birthdayID], (err) => {
-    if (err) {
-      res.status(500).json({ error: err });
-    } else {
-      res.status(200).send(`${birthdayID} has been deleted!`);
+  connection.query(
+    "DELETE FROM Birthdays WHERE birthdayID = ?",
+    [birthdayID],
+    err => {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        res.status(200).send(`${birthdayID} has been deleted!`);
+      }
     }
-  });
+  );
 });
 
 app.post("/birthdays", (req, res) => {
@@ -54,15 +58,32 @@ app.post("/birthdays", (req, res) => {
 app.put("/birthdays/:birthdayID", (req, res) => {
   const birthdayID = req.params.birthdayID;
   const birthday = req.body;
-  const q = "UPDATE Birthdays SET name = ?, gender = ?, date_of_birth = ?, interests = ? WHERE birthdayID = ?";
-  connection.query(q, [birthday.name, birthday.gender, birthday.date_of_birth, birthday.interests, birthday.birthdayID], (err, data) => {
-    if (err) {
-      res.status(500).json({ error: err });
-    } else {
-      res.status(205).send(`You updated a birthday for ${birthday.name} with the following data: ${JSON.stringify(birthday)}`);
+  const q =
+    "UPDATE Birthdays SET name = ?, gender = ?, date_of_birth = ?, interests = ?, phone_number = ? WHERE birthdayID = ?";
+  connection.query(
+    q,
+    [
+      birthday.name,
+      birthday.gender,
+      birthday.date_of_birth,
+      birthday.interests,
+      birthday.phone_number,
+      birthday.birthdayID
+    ],
+    (err, data) => {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        res
+          .status(205)
+          .send(
+            `You updated a birthday for ${
+              birthday.name
+            } with the following data: ${JSON.stringify(birthday)}`
+          );
+      }
     }
-  });
+  );
 });
-
 
 module.exports.birthdays = serverlessHttp(app);
