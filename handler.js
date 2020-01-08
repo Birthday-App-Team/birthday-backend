@@ -54,13 +54,14 @@ app.post("/birthdays", (req, res) => {
     if (err) {
       res.status(500).json({ error: err });
     } else {
+      // eslint-disable-next-line no-lonely-if
       if (moment(birthday).format("MM-DD") === moment().format("MM-DD")) {
         axios
           .post(
             "https://46m3x72wmb.execute-api.eu-west-2.amazonaws.com/dev/send",
             {
-              recipient_name: name,
-              recipient_phone_number: number,
+              recipient_name: birthday.name,
+              recipient_phone_number: birthday.number,
               message: "What a lovely morning!:D :D",
               from_phone_number: "+447506190696"
             }
@@ -92,7 +93,7 @@ app.put("/birthdays/:birthdayID", (req, res) => {
       birthday.phone_number,
       birthdayID
     ],
-    (err, data) => {
+    err => {
       if (err) {
         res.status(500).json({ error: err });
       } else {
