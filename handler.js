@@ -69,6 +69,11 @@ app.post("/birthdays", (req, res) => {
           .then(() => {
             birthday.birthdayID = data.insertID;
             res.status(201).json(birthday);
+          })
+          .catch(err => {
+            console.log("Error sending birthday message", err);
+            birthday.birthdayID = data.insertID;
+            res.status(201).send(birthday);
           });
       } else {
         birthday.birthdayID = data.insertID;
