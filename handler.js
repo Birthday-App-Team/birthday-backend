@@ -4,6 +4,8 @@ const serverlessHttp = require("serverless-http");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
+const moment = require("moment");
+const axios = require("axios");
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -44,7 +46,7 @@ app.delete("/birthdays/:birthdayID", (req, res) => {
 
 app.post("/birthdays", (req, res) => {
   const birthday = req.body;
-  const dob = birthday; // install and require moment
+  // install and require moment
   // find out if it is this person's birthday today
   // if so, make an axios request to the sendBirthday message function
   const q = "INSERT INTO Birthdays SET ?";
@@ -52,8 +54,25 @@ app.post("/birthdays", (req, res) => {
     if (err) {
       res.status(500).json({ error: err });
     } else {
-      birthday.birthdayID = data.insertID;
-      res.status(201).json(birthday);
+      if (moment(birthday).format("MM-DD") === moment().format("MM-DD")) {
+        axios
+          .post(
+            "https://46m3x72wmb.execute-api.eu-west-2.amazonaws.com/dev/send",
+            {
+              recipient_name: name,
+              recipient_phone_number: number,
+              message: "What a lovely morning!:D :D",
+              from_phone_number: "+447506190696"
+            }
+          )
+          .then(() => {
+            birthday.birthdayID = data.insertID;
+            res.status(201).json(birthday);
+          });
+      } else {
+        birthday.birthdayID = data.insertID;
+        res.status(201).json(birthday);
+      }
     }
   });
 });
