@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: "birthdaydb"
+  database: "birthdaydb",
 });
 
 const app = express();
@@ -34,13 +34,13 @@ app.delete("/birthdays/:birthdayID", (req, res) => {
   connection.query(
     "DELETE FROM Birthdays WHERE birthdayID = ?",
     [birthdayID],
-    err => {
+    (err) => {
       if (err) {
         res.status(500).json({ error: err });
       } else {
         res.status(200).send(`${birthdayID} has been deleted!`);
       }
-    }
+    },
   );
 });
 
@@ -61,7 +61,7 @@ app.post("/birthdays", (req, res) => {
             "https://46m3x72wmb.execute-api.eu-west-2.amazonaws.com/dev/send",
             {
               recipient_name: birthday.name,
-              recipient_phone_number: birthday.number,
+              recipient_phone_number: birthday.phone_number,
               message: "What a lovely morning!:D :D",
               from_phone_number: "+447506190696"
             }
@@ -98,7 +98,7 @@ app.put("/birthdays/:birthdayID", (req, res) => {
       birthday.phone_number,
       birthdayID
     ],
-    err => {
+    (err) => {
       if (err) {
         res.status(500).json({ error: err });
       } else {
@@ -110,7 +110,7 @@ app.put("/birthdays/:birthdayID", (req, res) => {
             } with the following data: ${JSON.stringify(birthday)}`
           );
       }
-    }
+    },
   );
 });
 
