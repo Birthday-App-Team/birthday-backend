@@ -60,7 +60,7 @@ app.put("/birthdays/:birthdayID", (req, res) => {
   const birthdayID = req.params.birthdayID;
   const birthday = req.body;
   const q =
-    "UPDATE Birthdays SET name = ?, gender = ?, date_of_birth = ?, interests = ?, phone_number = ? send_message = ? birthday_message = ? WHERE birthdayID = ?";
+    "UPDATE Birthdays SET name = ?, gender = ?, date_of_birth = ?, interests = ?, phone_number = ?, send_message = ?, birthday_message = ? WHERE birthdayID = ?";
   connection.query(
     q,
     [
